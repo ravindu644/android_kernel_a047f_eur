@@ -58,7 +58,7 @@ build_boot() {
 #build odin flashable tar
 build_tar(){
     cd ${RDIR}/build
-    tar -cvf "Kernel-SM-A047F.tar" boot.img && rm boot.img
+    tar -cvf "KernelSU-Next-SM-A047F.tar" boot.img && rm boot.img
     echo -e "\n[i] Build Finished..!\n" && cd ${RDIR}
 }
 
