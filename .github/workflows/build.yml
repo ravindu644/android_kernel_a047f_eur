@@ -1,0 +1,45 @@
+name: Kernel Compilation
+
+on:
+  workflow_dispatch:
+    inputs:      
+      tag:
+        description: 'Release Tag'
+        required: true    
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout source
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 1
+
+    - name: Set up build environment
+      run: |
+        sudo apt update -y  
+        sudo apt install libncurses5-dev -y
+        export PATH=$HOME/toolchains/proton-12/bin:$HOME/toolchains/aarch64-linaro-7.5/bin:$PATH
+
+    - name: Compile Kernel
+      run: |
+        bash build.sh
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: KernelSU-Next-SM-A047F-${{ github.event.inputs.tag }}
+        path: build/*.zip
+
+    - name: Create release
+      uses: ncipollo/release-action@v1
+      with:
+        tag: ${{ github.event.inputs.tag }}
+        name: "KernelSU-Next-SM-A047F-${{ github.event.inputs.tag }}"
+        draft: false
+        prerelease: false
+        token: ${{ secrets.TOKEN }}          
+        artifacts: "build/*.zip"
+        body: "Commit SHA: ${{ github.sha }}"
