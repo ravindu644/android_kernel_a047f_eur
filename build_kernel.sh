@@ -23,6 +23,8 @@ fi
 
 #build options
 export ARGS="
+-C $(pwd) \
+O=$(pwd)/out \
 -j$(nproc) \
 ARCH=arm64 \
 CROSS_COMPILE=${BUILD_CROSS_COMPILE} \
