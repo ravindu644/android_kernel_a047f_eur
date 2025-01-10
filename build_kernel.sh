@@ -1,8 +1,38 @@
 #!/bin/bash
 
+export RDIR="$(pwd)"
 export ARCH=arm64
+export KBUILD_BUILD_USER="@ravindu644"
 export PLATFORM_VERSION=12
 export ANDROID_MAJOR_VERSION=s
 
-make ARCH=arm64 exynos850-a04sxx_defconfig
-make ARCH=arm64 -j16
+export BUILD_CROSS_COMPILE="${RDIR}/toolchain/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-"
+export BUILD_CC="${RDIR}/toolchain/clang/host/linux-x86/clang-r353983c/bin/clang"
+
+#output dir
+if [ ! -d "${RDIR}/out" ]; then
+    mkdir -p "${RDIR}/out"
+fi
+
+#build dir
+if [ ! -d "${RDIR}/build" ]; then
+    mkdir -p "${RDIR}/build"
+else
+    rm -rf "${RDIR}/build" && mkdir -p "${RDIR}/build"
+fi
+
+#build options
+export ARGS="
+-j$(nproc) \
+ARCH=arm64 \
+CROSS_COMPILE=${BUILD_CROSS_COMPILE} \
+CC=${BUILD_CC} \
+"
+
+#build kernel image
+build_kernel(){
+    make ${ARGS} clean && make ${ARGS} mrproper
+    make ${ARGS} exynos850-a04sxx_defconfig
+    make ${ARGS} menuconfig
+    make ${ARGS} || exit 1
+}
