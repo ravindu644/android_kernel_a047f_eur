@@ -34,7 +34,7 @@ CC=${BUILD_CC} \
 #build kernel image
 build_kernel(){
     make ${ARGS} clean && make ${ARGS} mrproper
-    make ${ARGS} exynos850-a04sxx_defconfig
+    make ${ARGS} exynos850-a04sxx_defconfig a04s.config
     make ${ARGS} menuconfig
     make ${ARGS} || exit 1
 }
