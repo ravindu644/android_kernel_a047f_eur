@@ -14,6 +14,9 @@ export ANDROID_MAJOR_VERSION=s
 export BUILD_CROSS_COMPILE="${RDIR}/toolchain/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-"
 export BUILD_CC="${RDIR}/toolchain/clang/host/linux-x86/clang-r353983c/bin/clang"
 
+#init ksu next
+git submodule init && git submodule update
+
 #output dir
 if [ ! -d "${RDIR}/out" ]; then
     mkdir -p "${RDIR}/out"
