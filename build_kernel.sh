@@ -1,5 +1,10 @@
 #!/bin/bash
 
+#====================================================================================================================#
+#                         BEFORE DOING ANYTHING, INSTALL THE REQUIREMENTS FIRST:                                     #
+# https://github.com/ravindu644/Android-Kernel-Tutorials#requirements-for-compiling-kernels--paste-this-in-terminal  #
+#====================================================================================================================#
+
 export RDIR="$(pwd)"
 export ARCH=arm64
 export KBUILD_BUILD_USER="@ravindu644"
