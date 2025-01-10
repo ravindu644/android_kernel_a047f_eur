@@ -33,7 +33,7 @@ CC=${BUILD_CC} \
 
 #build kernel image
 build_kernel(){
-    make ${ARGS} clean && make ${ARGS} mrproper
+    #make ${ARGS} clean && make ${ARGS} mrproper
     make ${ARGS} exynos850-a04sxx_defconfig a04s.config
     make ${ARGS} menuconfig
     make ${ARGS} || exit 1
@@ -45,8 +45,15 @@ build_boot() {
     cp "${RDIR}/out/arch/arm64/boot/Image" ${RDIR}/AIK-Linux/split_img/boot.img-kernel
     mkdir -p ${RDIR}/AIK-Linux/ramdisk/{debug_ramdisk,dev,metadata,mnt,proc,second_stage_resources,sys}
     cd ${RDIR}/AIK-Linux && ./repackimg.sh --nosudo && mv image-new.img ${RDIR}/build/boot.img
+}
+
+#build odin flashable tar
+build_tar(){
+    cd ${RDIR}/build
+    tar -cvf "Kernel-SM-A047F.tar" boot.img && rm boot.img
     echo -e "\n[i] Build Finished..!\n" && cd ${RDIR}
 }
 
 build_kernel
 build_boot
+build_tar
