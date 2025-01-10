@@ -36,3 +36,5 @@ build_kernel(){
     make ${ARGS} menuconfig
     make ${ARGS} || exit 1
 }
+
+build_kernel
