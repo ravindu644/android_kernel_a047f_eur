@@ -29,6 +29,14 @@ else
     rm -rf "${RDIR}/build" && mkdir -p "${RDIR}/build"
 fi
 
+#kernelversion
+if [ -z "$BUILD_KERNEL_VERSION" ]; then
+    export BUILD_KERNEL_VERSION="dev"
+fi
+
+#setting up localversion
+echo -e "CONFIG_LOCALVERSION_AUTO=n\nCONFIG_LOCALVERSION=\"-ravindu644-${BUILD_KERNEL_VERSION}\"\n" > "${RDIR}/arch/arm64/configs/version.config"
+
 #build options
 export ARGS="
 -C $(pwd) \
@@ -42,7 +50,7 @@ CC=${BUILD_CC} \
 #build kernel image
 build_kernel(){
     #make ${ARGS} clean && make ${ARGS} mrproper
-    make ${ARGS} exynos850-a04sxx_defconfig a04s.config
+    make ${ARGS} exynos850-a04sxx_defconfig a04s.config version.config
     make ${ARGS} menuconfig
     make ${ARGS} || exit 1
 }
@@ -58,7 +66,7 @@ build_boot() {
 #build odin flashable tar
 build_tar(){
     cd ${RDIR}/build
-    tar -cvf "KernelSU-Next-SM-A047F.tar" boot.img && rm boot.img
+    tar -cvf "KernelSU-Next-SM-A047F-${BUILD_KERNEL_VERSION}.tar" boot.img && rm boot.img
     echo -e "\n[i] Build Finished..!\n" && cd ${RDIR}
 }
 
