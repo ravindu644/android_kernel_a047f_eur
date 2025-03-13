@@ -42,6 +42,7 @@ echo -e "CONFIG_LOCALVERSION_AUTO=n\nCONFIG_LOCALVERSION=\"-ravindu644-${BUILD_K
 
 #build options
 export ARGS="
+-w \
 -C $(pwd) \
 O=$(pwd)/out \
 -j$(nproc) \
